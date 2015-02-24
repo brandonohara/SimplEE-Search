@@ -1,9 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+	* SimplEE Search Installer
+	*
+	* @package   SimplEE Search
+	* @author    Brandon O'Hara <brandon@brandonohara.com>
+	* @copyright Copyright (c) 2014 Brandon O'Hara
+*/
+require_once(PATH_THIRD."simplee_search/config.php");
 
 class Simplee_search_upd {
 
-	var $module_name = 'Simplee_search';
-    var $version = '1.0.1';
+	var $module_name = SIMPLEE_SEARCH_EE_NAME;
+    var $version = SIMPLEE_SEARCH_VERSION;
     
     function install(){
 	    ee()->load->dbforge();
@@ -32,5 +40,5 @@ class Simplee_search_upd {
 	    return FALSE;
 	}
 }
-
-?>
+/* End of file upd.simplee_search.php */
+/* Location: system/expressionengine/third_party/simplee_search/upd.simplee_search.php */

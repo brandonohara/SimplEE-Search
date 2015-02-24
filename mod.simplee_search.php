@@ -1,19 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
-====================================================================================================
- Author: Brandon O'Hara
- http://brandonohara.com
-====================================================================================================
- This file must be placed in the system/expressionengine/third_party/simplee_search folder in your ExpressionEngine installation.
- package 		simplEE Search (EE2 Version)
- version 		Version 1.0.0
- copyright 		Copyright (c) 2014 Brandon O'Hara <brandon@brandonohara.com>
-----------------------------------------------------------------------------------------------------
- Purpose: Quickly search channel entries by multiple fields.
-====================================================================================================
-
+	* SimplEE Search Module
+	*
+	* @package   SimplEE Search
+	* @author    Brandon O'Hara <brandon@brandonohara.com>
+	* @copyright Copyright (c) 2014 Brandon O'Hara
 */
-require_once APPPATH."modules/channel/mod.channel.php";
+require_once(PATH_THIRD."simplee_search/config.php");
+require_once(APPPATH."modules/channel/mod.channel.php");
 					
 
 class Simplee_search extends Channel {
@@ -31,6 +25,9 @@ class Simplee_search extends Channel {
 		$explode = $this->EE->TMPL->fetch_param('explode') == 'no' ? FALSE : TRUE;
 		$weight_fields = $this->EE->TMPL->fetch_param('weight') == 'no' ? FALSE : TRUE;
 		$delimiter = $this->EE->TMPL->fetch_param('delimiter') ? $this->EE->TMPL->fetch_param('delimiter') : ' ';
+		
+		$orderby = $this->EE->TMPL->fetch_param('orderby');
+		$order = $orderby == "" || $orderby == "relevence" ? "fixed_order" : "entry_id";
 				
 		$terms = $explode ? explode($delimiter, $search) : array($search);
 		$query = $this->EE->db->from('exp_channel_titles')
@@ -75,7 +72,9 @@ class Simplee_search extends Channel {
 			
 	    parent::Channel();
         $this->EE->TMPL->tagparams['dynamic'] = 'no';
-        $this->EE->TMPL->tagparams['fixed_order'] = $entries;
+        $this->EE->TMPL->tagparams['orderby'] = $order == "fixed_order" ? "" : $orderby;
+        $this->EE->TMPL->tagparams['sort'] = $order == "fixed_order" ? "" : $this->EE->TMPL->tagparams['sort'];
+        $this->EE->TMPL->tagparams[$order] = $entries;
         return parent::entries();
 	}
 	
